@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 17:39:31 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/14 01:32:37 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/14 16:30:36 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	ft_printf(t_table *table, const char *src, ...)
 
 	i = -1;
 	va_start(list, src);
-	pthread_mutex_lock(table->print_mutex);
+	pthread_mutex_lock(table->print_mutex_mutex);
 	pthread_mutex_lock(table->death_mutex);
 	if (table->philo_dead)
 	{
 		pthread_mutex_unlock(table->death_mutex);
-		return (pthread_mutex_unlock(table->print_mutex));
+		return (pthread_mutex_unlock(table->print_mutex_mutex));
 	}
 	while (src[++i])
 	{
@@ -71,6 +71,6 @@ void	ft_printf(t_table *table, const char *src, ...)
 	}
 	va_end(list);
 	pthread_mutex_unlock(table->death_mutex);
-	pthread_mutex_unlock(table->print_mutex);
+	pthread_mutex_unlock(table->print_mutex_mutex);
 	return ;
 }

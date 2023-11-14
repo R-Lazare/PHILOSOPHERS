@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:41 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/14 01:52:41 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/14 16:08:13 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ void	check_and_exec(int (*func)(t_philo), t_table *table, int id)
 		pthread_mutex_unlock(table->death_mutex);
 		return ;
 	}
+	pthread_mutex_unlock(table->death_mutex);
 	func(table->philos[id]);
 }
