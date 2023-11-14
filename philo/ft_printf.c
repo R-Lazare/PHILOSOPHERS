@@ -6,29 +6,28 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 17:39:31 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/14 16:30:36 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/14 17:55:11 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_putnbr(int nb, int i)
+void	ft_putnbr(int nb)
 {
 	if (nb == -2147483648)
 	{
 		write(1, "-2147483648", 11);
-		return (11);
+		return ;
 	}
 	if (nb < 0)
 	{
 		write(1, "-", 1);
-		i++;
 		nb = -nb;
 	}
 	if (nb > 9)
-		i = i + ft_putnbr(nb / 10, i);
-	i = i + ft_putchar(nb % 10 + '0');
-	return (i);
+		ft_putnbr(nb / 10);
+	ft_putchar(nb % 10 + '0');
+	return ;
 }
 
 void	ft_putnbr_base(unsigned int nb, char *base, unsigned int size)
@@ -44,23 +43,23 @@ void	ft_pourcent(const char *src, va_list list, int i)
 	if (src[i] == 's')
 		ft_putstr(va_arg(list, char *));
 	else if (src[i] == 'd')
-		ft_putnbr(va_arg(list, int), 0);
+		ft_putnbr(va_arg(list, int));
 	return ;
 }
 
-void	ft_printf(t_table *table, const char *src, ...)
+int	ft_printf(t_table *table, const char *src, ...)
 {
 	int		i;
 	va_list	list;
 
 	i = -1;
 	va_start(list, src);
-	pthread_mutex_lock(table->print_mutex_mutex);
+	pthread_mutex_lock(table->print_mutex);
 	pthread_mutex_lock(table->death_mutex);
 	if (table->philo_dead)
 	{
 		pthread_mutex_unlock(table->death_mutex);
-		return (pthread_mutex_unlock(table->print_mutex_mutex));
+		return (pthread_mutex_unlock(table->print_mutex));
 	}
 	while (src[++i])
 	{
@@ -71,6 +70,6 @@ void	ft_printf(t_table *table, const char *src, ...)
 	}
 	va_end(list);
 	pthread_mutex_unlock(table->death_mutex);
-	pthread_mutex_unlock(table->print_mutex_mutex);
-	return ;
+	pthread_mutex_unlock(table->print_mutex);
+	return (0);
 }
