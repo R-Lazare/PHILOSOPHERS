@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:59:58 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/13 19:13:31 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/14 01:51:53 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_table
 	int					num_of_meals;
 	int					time_start;
 	int					philos_full;
+	int					philo_dead;
 	t_philo				*philos;
 	t_fork				*forks;
 	t_arena				*arena;
@@ -87,12 +88,13 @@ void					*arena_alloc(t_arena *a, size_t size);
 void					arena_destroy(t_arena *a);
 void					error_exit(char *error, pthread_mutex_t *print,
 							t_arena *arena);
-int						ft_printf(t_table *table, const char *src, ...);
+void					ft_printf(t_table *table, const char *src, ...);
 int						ft_atoi(const char *str);
 char					*ft_itoa(t_arena *arena, int n);
 int						get_time_ms(t_table *table);
 void					ft_putstr_fd(char *s, int fd);
 void					ft_putchar_fd(char c, int fd);
 void					*philo_life(void *philo);
+void					check_and_exec(int (*func)(t_philo), t_table *table, int id);
 
 #endif
