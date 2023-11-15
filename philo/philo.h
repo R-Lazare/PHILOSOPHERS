@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:01:55 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/14 20:02:20 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/15 16:40:35 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ typedef struct s_arena
 
 typedef struct s_fork
 {
-	pthread_mutex_t		fork;
-	pthread_mutex_t		fork_taken;
+	pthread_mutex_t		*fork;
+	pthread_mutex_t		*fork_taken;
 	int					fork_id;
 	int					is_taken;
 }						t_fork;

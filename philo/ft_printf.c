@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 17:39:31 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/14 17:55:11 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/15 15:36:14 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ int	ft_printf(t_table *table, const char *src, ...)
 	while (src[++i])
 	{
 		if (src[i] == '%')
+		{
+			i++;
 			ft_pourcent(src, list, i);
+		}
 		else
 			ft_putchar(src[i]);
 	}
