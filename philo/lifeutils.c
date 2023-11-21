@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:41 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/21 19:39:38 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/21 19:43:47 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	philo_eat(t_philo *philo)
 	{
 		pthread_mutex_unlock(philo->left_fork->fork_taken);
 		pthread_mutex_unlock(philo->right_fork->fork_taken);
-		pthread_mutex_lock(philo->eat_mutex);
 		philo->time_last_meal = get_time_ms(philo->table);
 		ft_printf(philo->table, "%d ms %d is eating\n",
 			get_time_ms(philo->table), philo->id);
@@ -67,7 +66,6 @@ void	philo_eat(t_philo *philo)
 		philo->left_fork->is_taken = 0;
 		pthread_mutex_unlock(philo->left_fork->fork);
 		pthread_mutex_unlock(philo->right_fork->fork);
-		pthread_mutex_unlock(philo->eat_mutex);
 	}
 	pthread_mutex_unlock(philo->left_fork->fork_taken);
 	pthread_mutex_unlock(philo->right_fork->fork_taken);
@@ -78,15 +76,9 @@ void	philo_lock1(t_philo *philo)
 	if (!near_philo_locked(philo))
 	{
 		if (philo->id % 2 == 0)
-		{
-			if (philo->left_fork->is_taken == 0)
-				lock_left_fork(philo);
-		}
+			lock_left_fork(philo);
 		else
-		{
-			if (philo->right_fork->is_taken == 0)
-				lock_right_fork(philo);
-		}
+			lock_right_fork(philo);
 	}
 }
 
@@ -95,15 +87,9 @@ void	philo_lock2(t_philo *philo)
 	if (!near_philo_locked(philo))
 	{
 		if (philo->id % 2 == 0)
-		{
-			if (philo->right_fork->is_taken == 0)
-				lock_right_fork(philo);
-		}
+			lock_right_fork(philo);
 		else
-		{
-			if (philo->left_fork->is_taken == 0)
-				lock_left_fork(philo);
-		}
+			lock_left_fork(philo);
 	}
 }
 
