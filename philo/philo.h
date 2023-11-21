@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:01:55 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/15 16:40:35 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/21 18:57:50 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_table
 	pthread_mutex_t		*death_mutex;
 	pthread_mutex_t		*table_mutex;
 	pthread_mutex_t		*print_mutex;
+	pthread_mutex_t		*time_mutex;
 }						t_table;
 
 void					*arena_init(size_t buffer_size);
@@ -81,20 +82,22 @@ void					*arena_alloc(t_arena *a, size_t size);
 void					arena_destroy(t_arena *a);
 void					error_exit(char *error, pthread_mutex_t *print,
 							t_arena *arena);
-int					ft_printf(t_table *table, const char *src, ...);
+int						ft_printf(t_table *table, const char *src, ...);
 int						ft_atoi(const char *str);
 char					*ft_itoa(t_arena *arena, int n);
 int						get_time_ms(t_table *table);
 void					ft_putstr_fd(char *s, int fd);
 void					ft_putchar_fd(char c, int fd);
 void					*philo_life(void *philo);
-void					check_and_exec(void (*func)(t_philo *), t_table *table,
-							int id);
+void					check_and_exec(void (*func)(t_philo *), t_philo *philo);
 t_table					*parse(t_arena *arena, int argc, char **argv);
 void					init_philo(t_table *table);
 int						ft_isdigit(const int c);
 int						ft_putchar(char c);
 void					ft_putnbr(int nb);
 int						ft_putstr(char *src);
+void					lock_left_fork(t_philo *philo);
+void					lock_right_fork(t_philo *philo);
+int						near_philo_locked(t_philo *philo);
 
 #endif

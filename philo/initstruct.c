@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:39 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/15 17:31:35 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/21 19:28:47 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_table	*parse(t_arena *arena, int argc, char **argv)
 	table = (t_table *)arena_alloc(arena, sizeof(t_table));
 	table->arena = arena;
 	table->time_start = 0;
-	table->time_start = get_time_ms(table);
 	table->print_mutex = (pthread_mutex_t *)arena_alloc(table->arena, sizeof(pthread_mutex_t));
 	pthread_mutex_init(table->print_mutex, NULL);
 	if (argc != 6 && argc != 5)
@@ -43,7 +42,7 @@ t_table	*parse(t_arena *arena, int argc, char **argv)
 	if (argc == 6)
 		table->num_of_meals = ft_atoi(argv[5]);
 	else if (argc == 5)
-		table->num_of_meals = -1;
+		table->num_of_meals = 2147483647;
 	if (!check_args(argc, argv))
 		error_exit("Error: Wrong arguments\n", table->print_mutex, arena);
 	table->philo_dead = 0;
@@ -56,15 +55,14 @@ void	init_forks(t_table *table)
 	int		i;
 
 	i = 0;
-	forks = (t_fork *)arena_alloc(table->arena, sizeof(t_fork)
-			* table->num_of_philos);
+	forks = (t_fork *)arena_alloc(table->arena, sizeof(t_fork) * table->num_of_philos);
 	while (i < table->num_of_philos)
 	{
 		forks[i].fork_id = i + 1;
 		forks[i].is_taken = 0;
-		forks[i].fork_taken = (pthread_mutex_t *)arena_alloc(table->arena, sizeof(pthread_mutex_t));
+		forks[i].fork_taken = (pthread_mutex_t *)arena_alloc(table->arena, 20);
 		pthread_mutex_init(forks[i].fork_taken, NULL);
-		forks[i].fork = (pthread_mutex_t *)arena_alloc(table->arena, sizeof(pthread_mutex_t));
+		forks[i].fork = (pthread_mutex_t *)arena_alloc(table->arena, 20);
 		pthread_mutex_init(forks[i].fork, NULL);
 		table->philos[i].right_fork = forks + i;
 		if (i != table->num_of_philos - 1 && table->num_of_philos != 1)
@@ -74,6 +72,9 @@ void	init_forks(t_table *table)
 		i++;
 	}
 	table->forks = forks;
+	table->time_mutex = (pthread_mutex_t *)arena_alloc(table->arena, 20);
+	pthread_mutex_init(table->time_mutex, NULL);
+	table->time_start = get_time_ms(table);
 }
 
 void	init_philo(t_table *table)
