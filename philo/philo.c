@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:43 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/21 18:31:20 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/22 17:59:54 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ int	main(int argc, char **argv)
 	init_philo(table);
 	i = -1;
 	while (++i < table->num_of_philos)
+	{
 		pthread_create(&table->philos[i].philo_thread_id, NULL, philo_life,
 			&table->philos[i]);
+		usleep(100);
+	}
 	while (1)
 	{
 		if (table->philo_dead || check_one_dead(table))

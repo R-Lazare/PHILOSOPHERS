@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=thread
 
 LDFLAGS = -lpthread
 
-src = philo.c lifeutils.c initstruct.c utils.c arena_alloc.c arena.c ft_atoi.c ft_isdigit.c ft_printf.c ft_itoa.c ft_putstr_fd.c ft_putchar_fd.c
+src = philo.c lifeutils.c lifeutils2.c initstruct.c utils.c arena_alloc.c arena.c ft_atoi.c ft_isdigit.c ft_printf.c ft_itoa.c ft_putstr_fd.c ft_putchar_fd.c
 
 obj = $(src:.c=.o)
 

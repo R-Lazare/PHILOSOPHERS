@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:39 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/21 19:28:47 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/22 17:05:03 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	init_philo(t_table *table)
 		table->philos[i].table = table;
 		table->philos[i].death_mutex = table->death_mutex;
 		table->philos[i].eat_mutex = table->table_mutex;
+		table->philos[i].fork_mutex = (pthread_mutex_t *)arena_alloc(table->arena, 20);
+		pthread_mutex_init(table->philos[i].fork_mutex, NULL);
 	}
 	return (init_forks(table));
 }

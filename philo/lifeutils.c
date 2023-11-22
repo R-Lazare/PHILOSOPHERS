@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:41 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/21 19:43:47 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/22 19:15:18 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	check_and_exec(void (*func)(t_philo *), t_philo *philo)
 	if (philo->table->philo_dead || philo->table->philos_full)
 	{
 		pthread_mutex_unlock(philo->table->death_mutex);
-		if (philo->id % 2 == 0)
+		if (philo->id % 2 == 1)
 		{
 			pthread_mutex_lock(philo->right_fork->fork_taken);
 			if (philo->right_fork->is_taken != 0)
@@ -29,7 +29,7 @@ void	check_and_exec(void (*func)(t_philo *), t_philo *philo)
 				pthread_mutex_unlock(philo->left_fork->fork);
 			pthread_mutex_unlock(philo->left_fork->fork_taken);
 		}
-		else if (philo->id % 2 == 1)
+		else if (philo->id % 2 == 0)
 		{
 			pthread_mutex_lock(philo->left_fork->fork_taken);
 			if (philo->left_fork->is_taken != 0)
@@ -48,34 +48,30 @@ void	check_and_exec(void (*func)(t_philo *), t_philo *philo)
 
 void	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork->fork_taken);
-	pthread_mutex_lock(philo->left_fork->fork_taken);
+	lock_ftaken(philo);
 	if (philo->right_fork->is_taken == philo->id
 		&& philo->left_fork->is_taken == philo->id)
 	{
-		pthread_mutex_unlock(philo->left_fork->fork_taken);
-		pthread_mutex_unlock(philo->right_fork->fork_taken);
+		unlock_ftaken(philo);
 		philo->time_last_meal = get_time_ms(philo->table);
 		ft_printf(philo->table, "%d ms %d is eating\n",
 			get_time_ms(philo->table), philo->id);
 		usleep(philo->table->time_to_eat * 1000);
 		philo->meals++;
-		pthread_mutex_lock(philo->right_fork->fork_taken);
-		pthread_mutex_lock(philo->left_fork->fork_taken);
+		check_exit(philo);
+		lock_ftaken(philo);
 		philo->right_fork->is_taken = 0;
 		philo->left_fork->is_taken = 0;
-		pthread_mutex_unlock(philo->left_fork->fork);
-		pthread_mutex_unlock(philo->right_fork->fork);
+		unlock_ftaken(philo);
 	}
-	pthread_mutex_unlock(philo->left_fork->fork_taken);
-	pthread_mutex_unlock(philo->right_fork->fork_taken);
+	unlock_ftaken(philo);
 }
 
 void	philo_lock1(t_philo *philo)
 {
 	if (!near_philo_locked(philo))
 	{
-		if (philo->id % 2 == 0)
+		if (philo->id % 2 == 1)
 			lock_left_fork(philo);
 		else
 			lock_right_fork(philo);
@@ -86,7 +82,7 @@ void	philo_lock2(t_philo *philo)
 {
 	if (!near_philo_locked(philo))
 	{
-		if (philo->id % 2 == 0)
+		if (philo->id % 2 == 1)
 			lock_right_fork(philo);
 		else
 			lock_left_fork(philo);
@@ -109,23 +105,20 @@ void	*philo_life(void *philo)
 	philo2 = (t_philo *)philo;
 	while (1)
 	{
+		// pthread_mutex_lock(philo2->table->table_mutex);
 		check_and_exec(&philo_lock1, philo2);
 		check_and_exec(&philo_lock2, philo2);
-		pthread_mutex_lock(philo2->right_fork->fork_taken);
-		pthread_mutex_lock(philo2->left_fork->fork_taken);
+		// pthread_mutex_unlock(philo2->table->table_mutex);
+		lock_ftaken(philo2);
 		if (philo2->right_fork->is_taken == philo2->id
 			&& philo2->left_fork->is_taken == philo2->id)
 		{
-			pthread_mutex_unlock(philo2->left_fork->fork_taken);
-			pthread_mutex_unlock(philo2->right_fork->fork_taken);
+			unlock_ftaken(philo2);
 			check_and_exec(&philo_eat, philo2);
 			check_and_exec(&philo_sleep_think, philo2);
 		}
 		else
-		{
-			pthread_mutex_unlock(philo2->left_fork->fork_taken);
-			pthread_mutex_unlock(philo2->right_fork->fork_taken);
-		}
+			unlock_ftaken(philo2);
 	}
 	return (NULL);
 }
