@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:43 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/22 17:59:54 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:16:34 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_all_full(t_table *table)
 int	check_one_dead(t_table *table)
 {
 	int	i;
+	// int	j;
 
 	i = -1;
 	while (++i < table->num_of_philos)
@@ -46,6 +47,17 @@ int	check_one_dead(t_table *table)
 			- table->philos[i].time_last_meal > table->time_to_die)
 		{
 			pthread_mutex_unlock(table->philos[i].eat_mutex);
+			
+			// j = -1;
+			// while (++j < table->num_of_philos)
+			// {
+			// 	ft_printf(table, "philo %d left fork taken %d\n",
+			// 		table->philos[j].id,
+			// 		table->philos[j].left_fork->is_taken);
+			// 	ft_printf(table, "philo %d right fork taken %d\n",
+			// 		table->philos[j].id,
+			// 		table->philos[j].right_fork->is_taken);
+			// }
 			ft_printf(table, "%d ms %d died\n", get_time_ms(table),
 				table->philos[i].id);
 			pthread_mutex_lock(table->death_mutex);
@@ -72,14 +84,14 @@ int	main(int argc, char **argv)
 	{
 		pthread_create(&table->philos[i].philo_thread_id, NULL, philo_life,
 			&table->philos[i]);
-		usleep(100);
+		usleep(1000);
 	}
 	while (1)
 	{
-		if (table->philo_dead || check_one_dead(table))
-			break ;
 		if (check_all_full(table))
-			break ;
+			break;
+		if (check_one_dead(table))
+			break;
 	}
 	i = -1;
 	while (++i < table->num_of_philos)

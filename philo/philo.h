@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:01:55 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/22 18:44:54 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 16:18:01 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_philo
 	int					meals;
 	int					is_eating;
 	int					is_dead;
-	int					is_full;
+	int					two_forks;
 	int					time_last_meal;
 	t_fork				*left_fork;
 	t_fork				*right_fork;

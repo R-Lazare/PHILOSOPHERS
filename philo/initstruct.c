@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:39 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/22 17:05:03 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 16:18:10 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	init_philo(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].is_eating = 0;
 		table->philos[i].is_dead = 0;
-		table->philos[i].is_full = 0;
+		table->philos[i].two_forks = 0;
 		table->philos[i].meals = 0;
 		table->philos[i].time_last_meal = 0;
 		table->philos[i].table = table;

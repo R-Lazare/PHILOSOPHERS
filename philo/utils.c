@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:58:04 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/22 19:15:27 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:01:45 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	lock_left_fork(t_philo *philo)
 		philo->left_fork->is_taken = philo->id;
 		pthread_mutex_unlock(philo->left_fork->fork_taken);
 		pthread_mutex_lock(philo->left_fork->fork);
+		philo->two_forks += 1;
 		ft_printf(philo->table, "%d ms %d has taken a fork\n",
 			get_time_ms(philo->table), philo->id);
 	}
@@ -53,17 +54,18 @@ void	lock_left_fork(t_philo *philo)
 
 void	lock_right_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork->fork_taken);
+	lock_ftaken(philo);
 	if (!philo->right_fork->is_taken)
 	{
 		philo->right_fork->is_taken = philo->id;
-		pthread_mutex_unlock(philo->right_fork->fork_taken);
+		unlock_ftaken(philo);
 		pthread_mutex_lock(philo->right_fork->fork);
+		philo->two_forks += 1;
 		ft_printf(philo->table, "%d ms %d has taken a fork\n",
 			get_time_ms(philo->table), philo->id);
 	}
 	else
-		pthread_mutex_unlock(philo->right_fork->fork_taken);
+		unlock_ftaken(philo);
 }
 
 int	near_philo_locked(t_philo *philo)
@@ -73,21 +75,19 @@ int	near_philo_locked(t_philo *philo)
 
 	philo_right = &philo->table->philos[philo->id % philo->table->num_of_philos];
 	philo_left = &philo->table->philos[(philo->id - 2) + philo->table->num_of_philos * (philo->id == 1)];
-	// lock_ftaken(philo_right);
-	if (philo_right->left_fork->is_taken == philo_right->id
-		|| philo_right->right_fork->is_taken == philo_left->id)
+	lock_ftaken(philo_right);
+	if (philo_right->left_fork->is_taken == philo_right->id)
 	{
-		// unlock_ftaken(philo_right);
+		unlock_ftaken(philo_right);
 		return (1);
 	}
-	// unlock_ftaken(philo_right);
-	//lock_ftaken(philo_left);
-	if (philo_left->right_fork->is_taken == philo_left->id
-		|| philo_left->left_fork->is_taken == philo_right->id)
+	unlock_ftaken(philo_right);
+	lock_ftaken(philo_left);
+	if (philo_left->right_fork->is_taken == philo_left->id)
 	{
-		// pthread_mutex_unlock(philo_left->fork_mutex);
+		unlock_ftaken(philo_left);
 		return (1);
 	}
-	// pthread_mutex_unlock(philo_left->fork_mutex);
+	unlock_ftaken(philo_left);
 	return (0);
 }
