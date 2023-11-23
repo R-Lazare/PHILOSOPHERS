@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:58:04 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/23 17:01:45 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 19:35:43 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	lock_left_fork(t_philo *philo)
 	pthread_mutex_lock(philo->left_fork->fork_taken);
 	if (!philo->left_fork->is_taken)
 	{
+		pthread_mutex_lock(philo->left_fork->fork);
 		philo->left_fork->is_taken = philo->id;
 		pthread_mutex_unlock(philo->left_fork->fork_taken);
-		pthread_mutex_lock(philo->left_fork->fork);
 		philo->two_forks += 1;
 		ft_printf(philo->table, "%d ms %d has taken a fork\n",
 			get_time_ms(philo->table), philo->id);
@@ -54,18 +54,18 @@ void	lock_left_fork(t_philo *philo)
 
 void	lock_right_fork(t_philo *philo)
 {
-	lock_ftaken(philo);
+	pthread_mutex_lock(philo->right_fork->fork_taken);
 	if (!philo->right_fork->is_taken)
 	{
 		philo->right_fork->is_taken = philo->id;
-		unlock_ftaken(philo);
+		pthread_mutex_unlock(philo->right_fork->fork_taken);
 		pthread_mutex_lock(philo->right_fork->fork);
 		philo->two_forks += 1;
 		ft_printf(philo->table, "%d ms %d has taken a fork\n",
 			get_time_ms(philo->table), philo->id);
 	}
 	else
-		unlock_ftaken(philo);
+		pthread_mutex_unlock(philo->right_fork->fork_taken);
 }
 
 int	near_philo_locked(t_philo *philo)

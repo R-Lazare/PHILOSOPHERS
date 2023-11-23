@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:43 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/23 17:16:34 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/23 20:48:42 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 	{
 		pthread_create(&table->philos[i].philo_thread_id, NULL, philo_life,
 			&table->philos[i]);
-		usleep(1000);
+		usleep(10000);
 	}
 	while (1)
 	{
