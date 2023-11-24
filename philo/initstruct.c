@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:39 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/23 16:18:10 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 11:59:34 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_table	*parse(t_arena *arena, int argc, char **argv)
 	table = (t_table *)arena_alloc(arena, sizeof(t_table));
 	table->arena = arena;
 	table->time_start = 0;
-	table->print_mutex = (pthread_mutex_t *)arena_alloc(table->arena, sizeof(pthread_mutex_t));
+	table->print_mutex = (pthread_mutex_t *)arena_alloc(table->arena,
+			sizeof(pthread_mutex_t));
 	pthread_mutex_init(table->print_mutex, NULL);
 	if (argc != 6 && argc != 5)
 		error_exit("Error: Wrong number of arguments\n", table->print_mutex,
@@ -55,7 +56,8 @@ void	init_forks(t_table *table)
 	int		i;
 
 	i = 0;
-	forks = (t_fork *)arena_alloc(table->arena, sizeof(t_fork) * table->num_of_philos);
+	forks = (t_fork *)arena_alloc(table->arena, sizeof(t_fork)
+			* table->num_of_philos);
 	while (i < table->num_of_philos)
 	{
 		forks[i].fork_id = i + 1;
@@ -81,8 +83,8 @@ void	init_philo(t_table *table)
 {
 	int	i;
 
-	table->philos = (t_philo *)arena_alloc(table->arena,
-			sizeof(t_philo) * table->num_of_philos);
+	table->philos = (t_philo *)arena_alloc(table->arena, sizeof(t_philo)
+			* table->num_of_philos);
 	table->death_mutex = (pthread_mutex_t *)arena_alloc(table->arena, 20);
 	pthread_mutex_init(table->death_mutex, NULL);
 	table->table_mutex = (pthread_mutex_t *)arena_alloc(table->arena, 20);
@@ -99,8 +101,6 @@ void	init_philo(t_table *table)
 		table->philos[i].table = table;
 		table->philos[i].death_mutex = table->death_mutex;
 		table->philos[i].eat_mutex = table->table_mutex;
-		table->philos[i].fork_mutex = (pthread_mutex_t *)arena_alloc(table->arena, 20);
-		pthread_mutex_init(table->philos[i].fork_mutex, NULL);
 	}
 	return (init_forks(table));
 }

@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:01:55 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/23 16:18:01 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 11:54:32 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void					lock_right_fork(t_philo *philo);
 int						near_philo_locked(t_philo *philo);
 void					lock_ftaken(t_philo *philo);
 void					unlock_ftaken(t_philo *philo);
-void					check_exit(t_philo *philo);
+void					check(t_philo *philo);
+void					one_philo(t_table *table);
 
 #endif

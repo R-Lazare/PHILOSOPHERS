@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:58:04 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/24 10:53:39 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 11:24:01 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ int	get_time_ms(t_table *table)
 	pthread_mutex_lock(table->time_mutex);
 	if (table->time_start == 0)
 		table->time_start = (int)(1000 * time.tv_sec) + (int)(time.tv_usec
-			/ 1000);
+				/ 1000);
 	timems = (int)(1000 * time.tv_sec) + (int)(time.tv_usec / 1000)
 		- table->time_start;
 	pthread_mutex_unlock(table->time_mutex);
 	return (timems);
 }
+
 void	lock_left_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork->fork_taken);
@@ -73,8 +74,10 @@ int	near_philo_locked(t_philo *philo)
 	t_philo	*philo_right;
 	t_philo	*philo_left;
 
-	philo_right = &philo->table->philos[philo->id % philo->table->num_of_philos];
-	philo_left = &philo->table->philos[(philo->id - 2) + philo->table->num_of_philos * (philo->id == 1)];
+	philo_right = &philo->table->philos[philo->id
+		% philo->table->num_of_philos];
+	philo_left = &philo->table->philos[(philo->id - 2)
+		+ philo->table->num_of_philos * (philo->id == 1)];
 	lock_ftaken(philo_right);
 	if (philo_right->left_fork->is_taken == philo_right->id)
 	{

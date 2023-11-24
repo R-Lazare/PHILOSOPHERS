@@ -6,41 +6,11 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:41 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/24 10:53:25 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 12:20:30 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	check_and_exec(void (*func)(t_philo *), t_philo *philo)
-{
-	pthread_mutex_lock(philo->table->death_mutex);
-	if (philo->table->philo_dead || philo->table->philos_full)
-	{
-		pthread_mutex_unlock(philo->table->death_mutex);
-		if (philo->id % 2 == 0)
-		{
-			lock_ftaken(philo);
-			if (philo->right_fork->is_taken == philo->id)
-				pthread_mutex_unlock(philo->right_fork->fork);
-			if (philo->left_fork->is_taken == philo->id)
-				pthread_mutex_unlock(philo->left_fork->fork);
-			unlock_ftaken(philo);
-		}
-		else
-		{
-			lock_ftaken(philo);
-			if (philo->left_fork->is_taken == philo->id)
-				pthread_mutex_unlock(philo->left_fork->fork);
-			if (philo->right_fork->is_taken == philo->id)
-				pthread_mutex_unlock(philo->right_fork->fork);
-			unlock_ftaken(philo);
-		}
-		pthread_exit(NULL);
-	}
-	pthread_mutex_unlock(philo->table->death_mutex);
-	func(philo);
-}
 
 void	philo_eat(t_philo *philo)
 {
@@ -73,7 +43,7 @@ void	philo_eat(t_philo *philo)
 void	philo_lock1(t_philo *philo)
 {
 	if (near_philo_locked(philo))
-		return;
+		return ;
 	if (philo->id % 2 == 0)
 		lock_left_fork(philo);
 	else
@@ -83,7 +53,7 @@ void	philo_lock1(t_philo *philo)
 void	philo_lock2(t_philo *philo)
 {
 	if (near_philo_locked(philo))
-		return;
+		return ;
 	if (philo->id % 2 == 0)
 		lock_right_fork(philo);
 	else
@@ -112,6 +82,7 @@ void	*philo_life(void *philo)
 		{
 			check_and_exec(&philo_eat, philo2);
 			check_and_exec(&philo_sleep_think, philo2);
+			usleep(1000);
 		}
 	}
 	return (NULL);
