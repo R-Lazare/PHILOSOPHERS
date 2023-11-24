@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:43 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/23 20:48:42 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 10:53:11 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_one_dead(t_table *table)
 			// 		table->philos[j].id,
 			// 		table->philos[j].right_fork->is_taken);
 			// }
-			ft_printf(table, "%d ms %d died\n", get_time_ms(table),
+			ft_printf(table, "%d %d died\n", get_time_ms(table),
 				table->philos[i].id);
 			pthread_mutex_lock(table->death_mutex);
 			table->philo_dead = 1;
