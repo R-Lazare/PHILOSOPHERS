@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:43 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/24 12:35:01 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 14:49:18 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	check_one_dead(t_table *table)
 	i = -1;
 	while (++i < table->num_of_philos)
 	{
-		time = get_time_ms(table) - table->philos[i].time_last_meal;
 		pthread_mutex_lock(table->philos[i].eat_mutex);
+		time = get_time_ms(table) - table->philos[i].time_last_meal;
 		if (time > table->time_to_die)
 		{
 			pthread_mutex_unlock(table->philos[i].eat_mutex);
