@@ -6,7 +6,7 @@
 /*   By: rluiz <rluiz@student.42lehavre.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:00:41 by rluiz             #+#    #+#             */
-/*   Updated: 2023/11/24 12:20:30 by rluiz            ###   ########.fr       */
+/*   Updated: 2023/11/24 12:33:41 by rluiz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	*philo_life(void *philo)
 		{
 			check_and_exec(&philo_eat, philo2);
 			check_and_exec(&philo_sleep_think, philo2);
-			usleep(1000);
+			usleep(2000);
 		}
 	}
 	return (NULL);
